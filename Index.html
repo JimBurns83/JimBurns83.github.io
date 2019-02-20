@@ -1,0 +1,513 @@
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Snippet - Bootsnipp.com</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px;
+        }
+        
+        .price-box {
+            margin: 0 auto;
+            background: #E9E9E9;
+            border-radius: 10px;
+            padding: 40px 15px;
+            /*width: 500px;*/
+        }
+        
+        .ui-widget-content {
+            border: 1px solid #bdc3c7;
+            background: #e1e1e1;
+            color: #222222;
+            margin-top: 4px;
+        }
+        
+        .ui-slider .ui-slider-handle {
+            position: absolute;
+            z-index: 2;
+            width: 7.2em;
+            height: 2.7em;
+            cursor: default;
+            margin: 0 -40px auto !important;
+            text-align: center;
+            line-height: 30px;
+            color: #FFFFFF;
+            font-size: 12px;
+        }
+        
+        .ui-slider .ui-slider-handle .glyphicon {
+            color: #FFFFFF;
+            margin: 0 1px;
+            font-size: 11px;
+            opacity: 0.7;
+        }
+        
+        .ui-corner-all {
+            border-radius: 20px;
+        }
+        
+        .ui-slider-horizontal .ui-slider-handle {
+            top: -.9em;
+        }
+        
+        .ui-state-default,
+        .ui-widget-content .ui-state-default {
+            border: 1px solid #f9f9f9;
+            background: #3498db;
+        }
+        
+        .ui-slider-horizontal .ui-slider-handle {
+            margin-left: -0.5em;
+        }
+        
+        .ui-slider .ui-slider-handle {
+            cursor: pointer;
+        }
+        
+        .ui-slider a,
+        .ui-slider a:focus {
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .price,
+        .lead p {
+            font-weight: 600;
+            font-size: 32px;
+            display: inline-block;
+            line-height: 60px;
+            border: 0;
+            width: 245px;
+        }
+        
+        h4.great {
+            margin: 0 0 25px 0;
+            padding: 7px 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .total {
+            border-bottom: 1px solid #7f8c8d;
+            /*display: inline;
+padding: 10px 5px;*/
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .total:before {
+            content: "";
+            display: inline;
+            position: absolute;
+            left: 0;
+            bottom: 5px;
+            width: 100%;
+            height: 3px;
+            background: #7f8c8d;
+            opacity: 0.5;
+        }
+        
+        .price-slider {
+            margin-bottom: 70px;
+        }
+        
+        .price-slider span {
+            font-weight: 200;
+            display: inline-block;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+        
+        .form-pricing {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        
+        .price-form {
+            background: #ffffff;
+            margin-bottom: 10px;
+            padding: 20px;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            /*-moz-box-shadow:    0 5px 5px 0 #ccc;
+-webkit-box-shadow: 0 5px 5px 0 #ccc;
+box-shadow:         0 5px 5px 0 #ccc;*/
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .form-group span.price {
+            font-weight: 200;
+            display: inline-block;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .help-text {
+            display: block;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            color: #737373;
+            /*position: absolute;*/
+            /*margin-left: 20px;*/
+            font-weight: 200;
+            /*text-align: right;*/
+            width: 188px;
+        }
+        
+        .price-form label {
+            font-weight: 200;
+            font-size: 21px;
+        }
+        
+        img.payment {
+            display: block;
+            margin-left: auto;
+            margin-right: auto
+        }
+        
+        .ui-slider-range-min {
+            background: #2980b9;
+        }
+        
+        .active-month,
+        .active-term {
+            background: #3276b1;
+        }
+        /* HR */
+        
+        hr.style {
+            margin-top: 0;
+            border: 0;
+            border-bottom: 1px dashed #ccc;
+            background: #999;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // JavaScript Document 
+        var val_DBRamAvailable = 1,
+            gge = (1.136),
+            val_Workers,
+            val_Filestore;
+
+        $(document).ready(function() {
+
+            $("#total").val("10000");
+
+            $("#slider_worker").slider({
+                range: "min",
+                animate: true,
+
+                min: 0,
+                max: 64,
+                step: 1,
+                value: 4,
+                slide: function(event, ui) {
+                    update("#slider_worker", ui.value); //changed
+                    val_Workers = ui.value;
+                    calcualtePrice(ui.value);
+                }
+            });
+
+            $('#slider_worker a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_worker").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
+
+            val_Workers = $("#slider_worker").slider("value");
+
+           
+        $("#slider_Filestore").slider({
+                range: "min",
+                animate: true,
+
+                min: 0,
+                max: 64,
+                step: 1,
+                value: 4,
+                slide: function(event, ui) {
+                    update("#slider_Filestore", ui.value); //changed
+                    val_Filestore = ui.value;
+                    calcualtePrice(ui.value);
+                }
+            });
+
+            $('#slider_Filestore a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_worker").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
+
+            val_Filestore = $("#slider_Filestore").slider("value");
+
+            calcualtePrice();
+        });
+
+        function update(slider, val) {
+
+            if (undefined === val) val = "0";
+
+            $('#sliderVal').val(val);
+
+            $('a', slider).html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + val + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
+        }
+
+        function calcualtePrice(val) {
+
+            //alert(val + " " + $("#slider_DBRamAvailable").slider("value"));
+
+            var total_Worker = ((val_Workers + 1) * (1)),
+            total_Filestore = (val_Filestore);
+
+            if (undefined === val)
+                val = $('#sliderVal').val();
+
+                $("#output_Worker").val(total_Worker).formatCurrency({
+                symbol: '',
+                roundToDecimalPlace: 0
+            });
+            $("#output_Filestore").val(total_Filestore).formatCurrency({
+                symbol: '',
+                roundToDecimalPlace: 0
+            });
+
+        }
+
+        (function($) {
+            $.formatCurrency = {};
+            $.formatCurrency.regions = [];
+            $.formatCurrency.regions[""] = {
+                symbol: "$",
+                positiveFormat: "%s%n",
+                negativeFormat: "(%s%n)",
+                decimalSymbol: ".",
+                digitGroupSymbol: ",",
+                groupDigits: true
+            };
+            $.fn.formatCurrency = function(destination, settings) {
+                if (arguments.length == 1 && typeof destination !== "string") {
+                    settings = destination;
+                    destination = false
+                }
+                var defaults = {
+                    name: "formatCurrency",
+                    colorize: false,
+                    region: "",
+                    global: true,
+                    roundToDecimalPlace: 2,
+                    eventOnDecimalsEntered: false
+                };
+                defaults = $.extend(defaults, $.formatCurrency.regions[""]);
+                settings = $.extend(defaults, settings);
+                if (settings.region.length > 0) {
+                    settings = $.extend(settings, getRegionOrCulture(settings.region))
+                }
+                settings.regex = generateRegex(settings);
+                return this.each(function() {
+                    $this = $(this);
+                    var num = "0";
+                    num = $this[$this.is("input, select, textarea") ? "val" : "html"]();
+                    if (num.search("\\(") >= 0) {
+                        num = "-" + num
+                    }
+                    if (num === "" || (num === "-" && settings.roundToDecimalPlace === -1)) {
+                        return
+                    }
+                    if (isNaN(num)) {
+                        num = num.replace(settings.regex, "");
+                        if (num === "" || (num === "-" && settings.roundToDecimalPlace === -1)) {
+                            return
+                        }
+                        if (settings.decimalSymbol != ".") {
+                            num = num.replace(settings.decimalSymbol, ".")
+                        }
+                        if (isNaN(num)) {
+                            num = "0"
+                        }
+                    }
+                    var numParts = String(num).split(".");
+                    var isPositive = (num == Math.abs(num));
+                    var hasDecimals = (numParts.length > 1);
+                    var decimals = (hasDecimals ? numParts[1].toString() : "0");
+                    var originalDecimals = decimals;
+                    num = Math.abs(numParts[0]);
+                    num = isNaN(num) ? 0 : num;
+                    if (settings.roundToDecimalPlace >= 0) {
+                        decimals = parseFloat("1." + decimals);
+                        decimals = decimals.toFixed(settings.roundToDecimalPlace);
+                        if (decimals.substring(0, 1) == "2") {
+                            num = Number(num) + 1
+                        }
+                        decimals = decimals.substring(2)
+                    }
+                    num = String(num);
+                    if (settings.groupDigits) {
+                        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++) {
+                            num = num.substring(0, num.length - (4 * i + 3)) + settings.digitGroupSymbol + num.substring(num.length - (4 * i + 3))
+                        }
+                    }
+                    if ((hasDecimals && settings.roundToDecimalPlace == -1) || settings.roundToDecimalPlace > 0) {
+                        num += settings.decimalSymbol + decimals
+                    }
+                    var format = isPositive ? settings.positiveFormat : settings.negativeFormat;
+                    var money = format.replace(/%s/g, settings.symbol);
+                    money = money.replace(/%n/g, num);
+                    var $destination = $([]);
+                    if (!destination) {
+                        $destination = $this
+                    } else {
+                        $destination = $(destination)
+                    }
+                    $destination[$destination.is("input, select, textarea") ? "val" : "html"](money);
+                    if (hasDecimals && settings.eventOnDecimalsEntered && originalDecimals.length > settings.roundToDecimalPlace) {
+                        $destination.trigger("decimalsEntered", originalDecimals)
+                    }
+                    if (settings.colorize) {
+                        $destination.css("color", isPositive ? "black" : "red")
+                    }
+                })
+            };
+            $.fn.toNumber = function(settings) {
+                var defaults = $.extend({
+                    name: "toNumber",
+                    region: "",
+                    global: true
+                }, $.formatCurrency.regions[""]);
+                settings = jQuery.extend(defaults, settings);
+                if (settings.region.length > 0) {
+                    settings = $.extend(settings, getRegionOrCulture(settings.region))
+                }
+                settings.regex = generateRegex(settings);
+                return this.each(function() {
+                    var method = $(this).is("input, select, textarea") ? "val" : "html";
+                    $(this)[method]($(this)[method]().replace("(", "(-").replace(settings.regex, ""))
+                })
+            };
+            $.fn.asNumber = function(settings) {
+                var defaults = $.extend({
+                    name: "asNumber",
+                    region: "",
+                    parse: true,
+                    parseType: "Float",
+                    global: true
+                }, $.formatCurrency.regions[""]);
+                settings = jQuery.extend(defaults, settings);
+                if (settings.region.length > 0) {
+                    settings = $.extend(settings, getRegionOrCulture(settings.region))
+                }
+                settings.regex = generateRegex(settings);
+                settings.parseType = validateParseType(settings.parseType);
+                var method = $(this).is("input, select, textarea") ? "val" : "html";
+                var num = $(this)[method]();
+                num = num ? num : "";
+                num = num.replace("(", "(-");
+                num = num.replace(settings.regex, "");
+                if (!settings.parse) {
+                    return num
+                }
+                if (num.length == 0) {
+                    num = "0"
+                }
+                if (settings.decimalSymbol != ".") {
+                    num = num.replace(settings.decimalSymbol, ".")
+                }
+                return window["parse" + settings.parseType](num)
+            };
+            function getRegionOrCulture(region) {
+                var regionInfo = $.formatCurrency.regions[region];
+                if (regionInfo) {
+                    return regionInfo
+                } else {
+                    if (/(\w+)-(\w+)/g.test(region)) {
+                        var culture = region.replace(/(\w+)-(\w+)/g, "$1");
+                        return $.formatCurrency.regions[culture]
+                    }
+                }
+                return null
+            }
+            function validateParseType(parseType) {
+                switch (parseType.toLowerCase()) {
+                    case "int":
+                        return "Int";
+                    case "float":
+                        return "Float";
+                    default:
+                        throw "invalid parseType"
+                }
+            }
+            function generateRegex(settings) {
+                if (settings.symbol === "") {
+                    return new RegExp("[^\\d" + settings.decimalSymbol + "-]", "g")
+                } else {
+                    var symbol = settings.symbol.replace("$", "\\$").replace(".", "\\.");
+                    return new RegExp(symbol + "|[^\\d" + settings.decimalSymbol + "-]", "g")
+                }
+            }
+        })(jQuery);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="price-box">
+            <div class="row">
+                <div class="col-sm-6">
+                    <form class="form-horizontal form-pricing" role="form">
+                      <div class="price-slider">
+                        <h4 class="great">Workers</h4>
+                        <div class="col-sm-12">
+                            <div id="slider_worker" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                                <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
+                                <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
+                                    <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price-slider">
+                      <h4 class="great">Filestore</h4>
+                      <div class="col-sm-12">
+                          <div id="slider_Filestore" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                              <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
+                              <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
+                                  <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+                    </form>
+                </div>
+                <div class="col-sm-6">
+                    <div class="price-form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="control-label">Workers Total</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="hidden" id="amount_amirol" class="form-control">
+                                    <input class="price lead" name="output_Worker" type="text" id="output_Worker" disabled="disabled" style="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="row">
+                              <div class="col-sm-6">
+                                  <label class="control-label">Filestore Total</label>
+                              </div>
+                              <div class="col-sm-6">
+                                  <input type="hidden" id="amount_amirol" class="form-control">
+                                  <input class="price lead" name="output_Filestore" type="text" id="output_Filestore" disabled="disabled" style="">
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+</body>
+
+</html>
