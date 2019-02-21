@@ -1,4 +1,3 @@
-
 <html>
 
 <head>
@@ -194,19 +193,37 @@ box-shadow:         0 5px 5px 0 #ccc;*/
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         // JavaScript Document 
+// define val_values
         var val_DBRamAvailable = 1,
             gge = (1.136),
             val_Workers,
-            val_Filestore;
+            val_Filestore,
+            val_Users,
+            val_Database;
 
         $(document).ready(function() {
 
-            $("#total").val("10000");
+            $("#total").val("10000"); //may not need this line
+// begin of link sliders to val_values
+              $("#slider_Users").slider({
+                range: "min",
+                animate: true,
+                min: 0,
+                max: 64,
+                step: 1,
+                value: 4,
+                slide: function(event, ui) {
+                    update("#slider_Users", ui.value); //changed
+                    val_Users = ui.value;
+                    calcualtePrice(ui.value);
+                }
+            });
+            $('#slider_Users a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_Users").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
+            val_Users = $("#slider_Users").slider("value");
 
             $("#slider_worker").slider({
                 range: "min",
                 animate: true,
-
                 min: 0,
                 max: 64,
                 step: 1,
@@ -217,16 +234,12 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                     calcualtePrice(ui.value);
                 }
             });
-
             $('#slider_worker a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_worker").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
-
             val_Workers = $("#slider_worker").slider("value");
 
-           
-        $("#slider_Filestore").slider({
+            $("#slider_Filestore").slider({
                 range: "min",
                 animate: true,
-
                 min: 0,
                 max: 64,
                 step: 1,
@@ -237,11 +250,25 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                     calcualtePrice(ui.value);
                 }
             });
-
-            $('#slider_Filestore a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_worker").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
-
+            $('#slider_Filestore a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_Filestore").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
             val_Filestore = $("#slider_Filestore").slider("value");
 
+            $("#slider_Database").slider({
+                range: "min",
+                animate: true,
+                min: 0,
+                max: 64,
+                step: 1,
+                value: 4,
+                slide: function(event, ui) {
+                    update("#slider_Database", ui.value); //changed
+                    val_Database = ui.value;
+                    calcualtePrice(ui.value);
+                }
+            });
+            $('#slider_Database a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> ' + $("#slider_Database").slider("value") + ' <span class="glyphicon glyphicon-chevron-right"></span></label>');
+            val_Database = $("#slider_Database").slider("value");
+// end of link sliders to val_values
             calcualtePrice();
         });
 
@@ -257,14 +284,21 @@ box-shadow:         0 5px 5px 0 #ccc;*/
         function calcualtePrice(val) {
 
             //alert(val + " " + $("#slider_DBRamAvailable").slider("value"));
-
+// calculate total values
+//define (and set) total_values
             var total_Worker = ((val_Workers + 1) * (1)),
-            total_Filestore = (val_Filestore);
+                total_Filestore = (val_Filestore),
+                total_Users = (val_Users),
+                total_Database = (val_Database);
 
             if (undefined === val)
                 val = $('#sliderVal').val();
-
-                $("#output_Worker").val(total_Worker).formatCurrency({
+// send total_values to screen 
+            $("#output_Users").val(total_Users).formatCurrency({
+                symbol: '',
+                roundToDecimalPlace: 0
+            });
+            $("#output_Worker").val(total_Worker).formatCurrency({
                 symbol: '',
                 roundToDecimalPlace: 0
             });
@@ -272,7 +306,11 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                 symbol: '',
                 roundToDecimalPlace: 0
             });
-
+            $("#output_Database").val(total_Database).formatCurrency({
+                symbol: '',
+                roundToDecimalPlace: 0
+            });
+// end of values to screen
         }
 
         (function($) {
@@ -415,6 +453,7 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                 }
                 return window["parse" + settings.parseType](num)
             };
+
             function getRegionOrCulture(region) {
                 var regionInfo = $.formatCurrency.regions[region];
                 if (regionInfo) {
@@ -427,6 +466,7 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                 }
                 return null
             }
+
             function validateParseType(parseType) {
                 switch (parseType.toLowerCase()) {
                     case "int":
@@ -437,6 +477,7 @@ box-shadow:         0 5px 5px 0 #ccc;*/
                         throw "invalid parseType"
                 }
             }
+
             function generateRegex(settings) {
                 if (settings.symbol === "") {
                     return new RegExp("[^\\d" + settings.decimalSymbol + "-]", "g")
@@ -448,69 +489,114 @@ box-shadow:         0 5px 5px 0 #ccc;*/
         })(jQuery);
     </script>
 </head>
+
 <body>
     <div class="container">
         <div class="price-box">
             <div class="row">
                 <div class="col-sm-6">
-                    <form class="form-horizontal form-pricing" role="form">
+                    <form class="form-horizontal form-pricing" role="form"> <!--Section to hold all sliders-->
                       <div class="price-slider">
-                        <h4 class="great">Workers</h4>
+                        <h4 class="great">Number of Users</h4>
                         <div class="col-sm-12">
-                            <div id="slider_worker" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                            <div id="slider_Users" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
                                 <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
                                 <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
                                     <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
                                 </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-slider">
+                          <h4 class="great">Number of Workers</h4>
+                          <div class="col-sm-12">
+                            <div id="slider_worker" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                              <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
+                                <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
+                                  <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="price-slider">
+                            <h4 class="great">Filestore Size</h4>
+                            <div class="col-sm-12">
+                                <div id="slider_Filestore" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                                    <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
+                                        <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-slider">
+                          <h4 class="great">Database Size</h4>
+                          <div class="col-sm-12">
+                              <div id="slider_Database" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                                  <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
+                                  <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
+                                      <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                    </form> <!-- End of Section to hold all sliders-->
+                </div>
+                <div class="col-sm-6">
+                    <div class="price-form"> <!--Display screen for output_values-->
+                      <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">Users Total</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="hidden" id="amount_amirol" class="form-control">
+                                <input class="price lead" name="output_Users" type="text" id="output_Users" disabled="disabled" style="">
                             </div>
                         </div>
                     </div>
-                    <div class="price-slider">
-                      <h4 class="great">Filestore</h4>
-                      <div class="col-sm-12">
-                          <div id="slider_Filestore" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
-                              <div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 6.25%;"></div>
-                              <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 6.25%;">
-                                  <label><span class="glyphicon glyphicon-chevron-left"></span> 4 <span class="glyphicon glyphicon-chevron-right"></span></label>
-                              </a>
+                    <div class="form-group">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <label class="control-label">Workers Total</label>
+                          </div>
+                          <div class="col-sm-6">
+                              <input type="hidden" id="amount_amirol" class="form-control">
+                              <input class="price lead" name="output_Worker" type="text" id="output_Worker" disabled="disabled" style="">
                           </div>
                       </div>
                   </div>
-                    </form>
-                </div>
-                <div class="col-sm-6">
-                    <div class="price-form">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <label class="control-label">Workers Total</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="hidden" id="amount_amirol" class="form-control">
-                                    <input class="price lead" name="output_Worker" type="text" id="output_Worker" disabled="disabled" style="">
-                                </div>
-                            </div>
+
+                  <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">Filestore Total</label>
                         </div>
-                        <div class="form-group">
-                          <div class="row">
-                              <div class="col-sm-6">
-                                  <label class="control-label">Filestore Total</label>
-                              </div>
-                              <div class="col-sm-6">
-                                  <input type="hidden" id="amount_amirol" class="form-control">
-                                  <input class="price lead" name="output_Filestore" type="text" id="output_Filestore" disabled="disabled" style="">
-                              </div>
-                          </div>
-                      </div>
+                        <div class="col-sm-6">
+                            <input type="hidden" id="amount_amirol" class="form-control">
+                            <input class="price lead" name="output_Filestore" type="text" id="output_Filestore" disabled="disabled" style="">
+                        </div>
                     </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                      <div class="col-sm-6">
+                          <label class="control-label">Database Total</label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="hidden" id="amount_amirol" class="form-control">
+                          <input class="price lead" name="output_Database" type="text" id="output_Database" disabled="disabled" style="">
+                      </div>
+                  </div>
+              </div>
+                    </div> <!--End of display screen-->
                 </div>
             </div>
         </div>
     </div>
-    <!--<script src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script src="https://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
-    <script src="jquery.ui.touch-punch.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 </body>
 
 </html>
